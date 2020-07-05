@@ -1,15 +1,28 @@
 import React from 'react';
-import styles from './Home.css';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 import {
-  Drawer, CssBaseline, AppBar, Toolbar, List, Divider, IconButton,
-  ListItem, InputLabel, FormControl, Select, Grid, Button, Typography,
-  Paper, FormControlLabel, RadioGroup, Radio, ThemeProvider
-} from '@material-ui/core'
-
-
-
+  Drawer,
+  CssBaseline,
+  AppBar,
+  Toolbar,
+  List,
+  Divider,
+  IconButton,
+  ListItem,
+  InputLabel,
+  FormControl,
+  Select,
+  Grid,
+  Button,
+  Typography,
+  Paper,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+  ThemeProvider,
+} from '@material-ui/core';
+import styles from './Home.css';
 
 const theme1 = createMuiTheme({
   palette: {
@@ -22,12 +35,6 @@ const theme1 = createMuiTheme({
   },
 });
 
-
 export default function Documentation(): JSX.Element {
-
-  return (
-    <ThemeProvider theme={theme1}>
-      
-    </ThemeProvider>
-  );
+  return <ThemeProvider theme={theme1} />;
 }

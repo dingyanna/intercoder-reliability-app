@@ -1,8 +1,12 @@
 import React from 'react';
-import Documentation from './Documentation';
-import Calculation from './Calculation';
 import clsx from 'clsx';
-import { makeStyles, useTheme, Theme, createStyles, createMuiTheme } from '@material-ui/core/styles';
+import {
+  makeStyles,
+  useTheme,
+  Theme,
+  createStyles,
+  createMuiTheme,
+} from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -10,13 +14,21 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Tooltip from '@material-ui/core/Tooltip';
 import {
-  Drawer, CssBaseline, AppBar, Toolbar, List, Divider, IconButton,
-  ListItem, ThemeProvider
-} from '@material-ui/core'
+  Drawer,
+  CssBaseline,
+  AppBar,
+  Toolbar,
+  List,
+  Divider,
+  IconButton,
+  ListItem,
+  ThemeProvider,
+} from '@material-ui/core';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import HomeIcon from '@material-ui/icons/Home';
 import Table from '@material-ui/core/Table';
-
+import Calculation from './Calculation';
+import Documentation from './Documentation';
 
 const drawerWidth = 200;
 
@@ -75,7 +87,7 @@ const useStyles = makeStyles((theme: Theme) =>
       }),
       marginLeft: 0,
     },
-  }),
+  })
 );
 
 const theme1 = createMuiTheme({
@@ -88,7 +100,6 @@ const theme1 = createMuiTheme({
     },
   },
 });
-
 
 export default function Home(): JSX.Element {
   const classes = useStyles();
@@ -107,16 +118,13 @@ export default function Home(): JSX.Element {
   const handlePage = () => {
     if (isHomePage) {
       return <Calculation />;
-    } else {
-      return <Documentation />;
     }
-  }
-
+    return <Documentation />;
+  };
 
   return (
     <ThemeProvider theme={theme1}>
       <div className={classes.root}>
-
         <CssBaseline />
         <AppBar
           position="fixed"
@@ -124,7 +132,9 @@ export default function Home(): JSX.Element {
             [classes.appBarShift]: open,
           })}
         >
-          <Toolbar style={{ backgroundColor: "#6f7598", minHeight: 40, maxHeight: 40 }}>
+          <Toolbar
+            style={{ backgroundColor: '#6f7598', minHeight: 40, maxHeight: 40 }}
+          >
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -145,26 +155,35 @@ export default function Home(): JSX.Element {
             paper: classes.drawerPaper,
           }}
         >
-          <div className={classes.drawerHeader} style={{ minHeight: 40, maxHeight: 40 }}>
+          <div
+            className={classes.drawerHeader}
+            style={{ minHeight: 40, maxHeight: 40 }}
+          >
             <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+              {theme.direction === 'ltr' ? (
+                <ChevronLeftIcon />
+              ) : (
+                <ChevronRightIcon />
+              )}
             </IconButton>
           </div>
           <Divider />
           <List>
-            <ListItem button key={"Home"} onClick={() => setHome(true)}>
-              <ListItemIcon><HomeIcon></HomeIcon></ListItemIcon>
-              <ListItemText primary={"Home"} />
+            <ListItem button key="Home" onClick={() => setHome(true)}>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Home" />
             </ListItem>
-            
           </List>
           <Divider />
           <List>
-            <ListItem button key={"Documentation"} onClick={() => setHome(false)}>
-              <ListItemIcon><MenuBookIcon></MenuBookIcon></ListItemIcon>
-               <ListItemText primary={"Documentation"} />
+            <ListItem button key="Documentation" onClick={() => setHome(false)}>
+              <ListItemIcon>
+                <MenuBookIcon />
+              </ListItemIcon>
+              <ListItemText primary="Documentation" />
             </ListItem>
-            
           </List>
           <Divider />
         </Drawer>
@@ -175,7 +194,6 @@ export default function Home(): JSX.Element {
         >
           <div className={classes.drawerHeader} />
           {handlePage()}
-
         </main>
       </div>
     </ThemeProvider>
