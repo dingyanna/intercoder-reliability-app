@@ -1,14 +1,27 @@
-.container {
-  position: absolute;
-  top: 30%;
-  left: 10px;
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+  font-size: 1.15em;
+  color: black;
+  display: inline-block;
+  border-radius: 5px;
+  background-color: #d0d4ed;
+  cursor: pointer; 
+  transition: 0.1s;
+  width: 180px;
   text-align: center;
 }
 
-.container h2 {
-  font-size: 5rem;
+.inputfile:focus + label,
+.inputfile + label:hover {
+  background-color: #7986cb;
+  border-radius: 5px;
 }
 
-.container a {
-  font-size: 1.4rem;
-}
