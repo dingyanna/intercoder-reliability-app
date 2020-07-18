@@ -12,7 +12,6 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Tooltip from '@material-ui/core/Tooltip';
 import {
   Drawer,
   CssBaseline,
@@ -26,7 +25,6 @@ import {
 } from '@material-ui/core';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import HomeIcon from '@material-ui/icons/Home';
-import Table from '@material-ui/core/Table';
 import Calculation from './Calculation';
 import Documentation from './Documentation';
 

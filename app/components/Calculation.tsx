@@ -20,6 +20,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import styles from './Home.css';
+import {PythonShell} from 'python-shell';
+import Swal from 'sweetalert2';
 
 const theme1 = createMuiTheme({
   palette: {
@@ -46,19 +48,50 @@ const rows = [
 
 export default function Calculation(): JSX.Element {
   const [data, setData] = React.useState('no file chosen');
+  const [dataPath, setDataPath] = React.useState('');
   const [categories, setCategories] = React.useState('no file chosen');
   const [weights, setWeights] = React.useState('no file chosen');
   const [measure, setMeasure] = React.useState('none');
   const [level_of_measurement, setLevel] = React.useState('nominal');
+  const [result, setResult] = React.useState('');
+  const [numCoders, setNumCoders] = React.useState('-');
+  const [numSubjects, setNumSubjects] = React.useState('-');
+  const [categoryList, setCategoryList] = React.useState('');
 
   const onDataUploaded = (e: any): void => {
     e.preventDefault();
     setData(e.target.files[0].name);
+    setDataPath(e.target.files[0].path);
+    const path = require('path');
+    const options = {
+      scriptPath: path.join(__dirname, '/../engine'),
+      args: [e.target.files[0].path]
+    }
+    const detect_data = new PythonShell('detect_data.py', options);
+
+    detect_data.on('message', function(message) {
+      console.log(message)
+      const splitted = message.split(" "); 
+      setNumCoders(splitted[0]);
+      setNumSubjects(splitted[1]);
+    })
+    
   };
 
   const onCategoriesUploaded = (e: any): void => {
     e.preventDefault();
     setCategories(e.target.files[0].name);
+    const path = require('path');
+    const options = {
+      scriptPath: path.join(__dirname, '/../engine'),
+      args: [e.target.files[0].path]
+    }
+    const detect_cat = new PythonShell('detect_category.py', options);
+
+    detect_cat.on('message', function(message) {
+      console.log(message);
+      setCategoryList(message);
+    })
   };
 
   const onWeightsUploaded = (e: any): void => {
@@ -76,6 +109,8 @@ export default function Calculation(): JSX.Element {
     setData('no file chosen');
     setCategories('no file chosen');
     setWeights('no file chosen');
+    setNumCoders(0);
+    setNumSubjects(0);
   };
 
   const onLevelSet = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -101,6 +136,26 @@ export default function Calculation(): JSX.Element {
     return false;
   };
 
+  const calculate = () => {
+    const path = require('path');
+    const options = {
+      scriptPath: path.join(__dirname, '/../engine'),
+      args: [dataPath]
+    }
+    const cohen_kappa = new PythonShell('cohen_kappa.py', options);
+
+    cohen_kappa.on('message', function(message) {
+      console.log(message)
+      setResult(message);
+      Swal.fire( {
+        title: "Result", 
+        text: message,
+        confirmButtonColor: "#7986cb",   
+        confirmButtonText: "OK",
+      } )
+    })
+  }
+
   return (
     <ThemeProvider theme={theme1}>
       <Grid container style={{ marginLeft: 30 }} spacing={3}
@@ -110,8 +165,6 @@ export default function Calculation(): JSX.Element {
           container
           xs={3}
           direction="column"
-          justify="flex-start"
-          alignItems="flex-start"
           spacing={3}
         >
           <Grid item style={{ marginBottom: 10 }}>
@@ -152,28 +205,28 @@ export default function Calculation(): JSX.Element {
             "Fleiss' Kappa",
             'Percentage Agreement',
           ].includes(measure) && (
-            <Grid item>
-              <Typography variant="subtitle1">Level of Measurement:</Typography>
-              <RadioGroup
-                aria-label="level_of_measurement"
-                name="level_of_measurement"
-                value={level_of_measurement}
-                onChange={onLevelSet}
-                row
-              >
-                <FormControlLabel
-                  value="nominal"
-                  control={<Radio color="default" />}
-                  label="nominal"
-                />
-                <FormControlLabel
-                  value="ordinal"
-                  control={<Radio color="default" />}
-                  label="ordinal"
-                />
-              </RadioGroup>
-            </Grid>
-          )}
+              <Grid item>
+                <Typography variant="subtitle1">Level of Measurement:</Typography>
+                <RadioGroup
+                  aria-label="level_of_measurement"
+                  name="level_of_measurement"
+                  value={level_of_measurement}
+                  onChange={onLevelSet}
+                  row
+                >
+                  <FormControlLabel
+                    value="nominal"
+                    control={<Radio color="default" />}
+                    label="nominal"
+                  />
+                  <FormControlLabel
+                    value="ordinal"
+                    control={<Radio color="default" />}
+                    label="ordinal"
+                  />
+                </RadioGroup>
+              </Grid>
+            )}
           <Grid item>
             <input
               type="file"
@@ -183,7 +236,7 @@ export default function Calculation(): JSX.Element {
               onChange={onDataUploaded}
             />
             <label
-htmlFor="data" style={{ padding: 7 }}>
+              htmlFor="data" style={{ padding: 7 }}>
               Upload Data
             </label>
             <Typography
@@ -266,6 +319,7 @@ htmlFor="data" style={{ padding: 7 }}>
             <Button
               variant="contained"
               style={{ width: 180, backgroundColor: '#7986cb' }}
+              onClick={calculate}
             >
               OK
             </Button>
@@ -296,38 +350,19 @@ htmlFor="data" style={{ padding: 7 }}>
           <Grid item style={{ maxHeight: 500, overflow: 'auto' }}>
             <Grid item>
               <Typography variant="subtitle1">
-                1. Number of Coders: 0
+                1. Number of Coders: {numCoders}
               </Typography>
             </Grid>
 
             <Grid item>
               <Typography variant="subtitle1">
-                2. Number of Subjects: 0
+                2. Number of Subjects: {numSubjects}
               </Typography>
             </Grid>
 
             <Grid item>
               <Typography variant="subtitle1">3. Categories:</Typography>
-              <TableContainer>
-                <Table style={{ maxWidth: 450 }}>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Category</TableCell>
-                      <TableCell align="right">Weight</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rows.map((row) => (
-                      <TableRow key={row.category}>
-                        <TableCell component="th" scope="row">
-                          {row.category}
-                        </TableCell>
-                        <TableCell align="right">{row.weight}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              {categoryList}
             </Grid>
             <div style={{ height: 300 }} />
           </Grid>
