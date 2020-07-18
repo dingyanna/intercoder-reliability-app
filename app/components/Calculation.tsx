@@ -158,15 +158,9 @@ export default function Calculation(): JSX.Element {
 
   return (
     <ThemeProvider theme={theme1}>
-      <Grid container style={{ marginLeft: 30 }} spacing={3}
-      >
-        <Grid
-          item
-          container
-          xs={3}
-          direction="column"
-          spacing={3}
-        >
+      <Grid container spacing={3} direction="column" 
+            alignItems="center" justify="center">
+        
           <Grid item style={{ marginBottom: 10 }}>
             <Typography variant="h6" style={{ color: 'gray' }}>
               SETTINGS
@@ -325,49 +319,7 @@ export default function Calculation(): JSX.Element {
             </Button>
           </Grid>
         </Grid>
-        <Grid
-          item
-          container
-          xs={9}
-          direction="column"
-          justify="flex-start"
-          spacing={3}
-        >
-          <Grid item style={{ marginBottom: 10 }}>
-            <Typography variant="h6" style={{ color: 'gray' }}>
-              INFORMATION
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="subtitle1" style={{ color: 'gray' }}>
-              This section displays the essential information extracted from the
-              files uploaded in SETTINGS. Please confirm it before pressing OK.
-              It is recommended to refer the documentation for requirements on
-              the file format.
-            </Typography>
-          </Grid>
-
-          <Grid item style={{ maxHeight: 500, overflow: 'auto' }}>
-            <Grid item>
-              <Typography variant="subtitle1">
-                1. Number of Coders: {numCoders}
-              </Typography>
-            </Grid>
-
-            <Grid item>
-              <Typography variant="subtitle1">
-                2. Number of Subjects: {numSubjects}
-              </Typography>
-            </Grid>
-
-            <Grid item>
-              <Typography variant="subtitle1">3. Categories:</Typography>
-              {categoryList}
-            </Grid>
-            <div style={{ height: 300 }} />
-          </Grid>
-        </Grid>
-      </Grid>
+            
     </ThemeProvider>
   );
 }
