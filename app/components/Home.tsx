@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
+      
     },
     appBar: {
       transition: theme.transitions.create(['margin', 'width'], {
@@ -190,7 +191,7 @@ export default function Home(): JSX.Element {
             [classes.contentShift]: open,
           })}
         >
-          <div className={classes.drawerHeader} />
+          <div className={classes.drawerHeader}/>
           {handlePage()}
         </main>
       </div>
