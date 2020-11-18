@@ -47,32 +47,32 @@ export default function Documentation(): JSX.Element {
       <Grid item container spacing={2} direction='column'>
       <Grid item>
         <Typography>
-          1. Cohen's Kappa: Wikipedia
+          1. Cohen's Kappa: <Link onClick={() => shell.openExternal("https://en.wikipedia.org/wiki/Cohen%27s_kappa")}>Wikipedia</Link>
         </Typography>
       </Grid>
       <Grid item>
         <Typography>
-        2. Percentage Agreement: Suppose some raters are assigning several predefined categories to a set of subjects in an experiment. If there are 2 raters, the Percentage Agreement is the number of subjects which are assigned the same category twice divided by the total number of subjects. If there are more than 2 raters, we calculate the Percentage Agreement for each pair of raters and then take the mean to be the final Percentage Agreement. (more information)
-
+        2. Percentage Agreement: Suppose some raters are assigning several predefined categories to a set of subjects in an experiment. If there are 2 raters, the Percentage Agreement is the number of subjects which are assigned the same category twice divided by the total number of subjects. If there are more than 2 raters, we calculate the Percentage Agreement for each pair of raters and then take the mean to be the final Percentage Agreement. <Link onClick={() => shell.openExternal("https://cehs01.unl.edu/aalbano/intromeasurement/mainch7.html")}>(more information)</Link>
+        
         </Typography>
       </Grid>
       <Grid item>
         <Typography>
-          3. Krippendorff's Alpha: Wikipedia, Python Library
+          3. Krippendorff's Alpha: <Link onClick={() => shell.openExternal("https://en.wikipedia.org/wiki/Krippendorff%27s_alpha")}>Wikipedia</Link>, <Link onClick={() => shell.openExternal("https://pypi.org/project/krippendorff/")}>Python Library</Link>    
         </Typography>
       </Grid>
       <Grid item>
-        <Typography>4. Scotts’ Pi: Wikipedia</Typography>
+        <Typography>4. Scotts’ Pi: <Link onClick={() => shell.openExternal("https://en.wikipedia.org/wiki/Scott%27s_Pi")}>Wikipedia</Link></Typography>
       </Grid>
       <Grid item>
         <Typography>        
-          5. Fleiss' Kappa: Fleiss' Kappa is essentially Scott's Pi extended to handle more than 2 coders. The definition of Fleiss' Kappa is on this webpage. We used the generalized formula documented here to implement this statistic. 
+          5. Fleiss' Kappa: Fleiss' Kappa is essentially Scott's Pi extended to handle more than 2 coders. The definition of Fleiss' Kappa is on <Link onClick={() => shell.openExternal("https://en.wikipedia.org/wiki/Fleiss%27_kappa")}>this webpage</Link>. We used the generalized formula documented <Link onClick={() => shell.openExternal("https://github.com/jmgirard/mReliability/wiki/Scott%27s-pi-coefficient")}>here</Link> to implement this statistic. 
         </Typography>
 
       </Grid>
       <Grid item>
         <Typography>
-        6. Multi-label Kappa: Suppose some raters are assigning several pre-defined categories to a set of subjects in an experiment. In this case, a rater would examine multiple dimensions of each subject. For each dimension or feature, the rater would code 1 if he or she thinks a subject possesses that feature. So each subject can be coded as a binary vector such as (1, 0, 1), where each entry represents whether the subject has the corresponding feature. For example, when coding the sentiment of a given text, we would like to analyze whether the text reflects the following three emotions respectively: sadness, anger, happiness. If a rater assigns (1, 0, 0) to this text, then the rater considers this text to be sad, neither angry nor happy. The Multi-label Kappa can be treated as a weighted Kappa where the weights are calculated as the distance between different binary vectors.
+        6. Multi-label Kappa: Suppose some raters are assigning several predefined categories to a set of subjects in an experiment. In this case, a rater would examine multiple dimensions of each subject. For each dimension or feature, the rater would code 1 if he or she thinks a subject possesses that feature. So each subject can be coded as a binary vector such as (1, 0, 1), where each entry represents whether the subject has the corresponding feature. For example, when coding the sentiment of a given text, we would like to analyze whether the text reflects the following three emotions respectively: sadness, anger, happiness. If a rater assigns (1, 0, 0) to this text, then the rater considers this text to be sad, neither angry nor happy. The Multi-label Kappa can be treated as a weighted Kappa where the weights are calculated as the distance between different binary vectors.
         </Typography>
       </Grid>
       </Grid>
