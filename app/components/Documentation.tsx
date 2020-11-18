@@ -2,27 +2,11 @@ import React from 'react';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 import {
-  Drawer,
-  CssBaseline,
-  AppBar,
-  Toolbar,
-  List,
-  Divider,
-  IconButton,
-  ListItem,
-  InputLabel,
-  FormControl,
-  Select,
   Grid,
-  Button,
   Typography,
-  Paper,
-  FormControlLabel,
-  RadioGroup,
-  Radio,
+  Link,
   ThemeProvider,
 } from '@material-ui/core';
-import styles from './Home.css';
 
 const theme1 = createMuiTheme({
   palette: {
@@ -35,6 +19,8 @@ const theme1 = createMuiTheme({
   },
 });
 
+const shell = require('electron').shell
+
 export default function Documentation(): JSX.Element {
   return <ThemeProvider theme={theme1} >
     <Grid container direction="column" justify="center" alignItems="flex-start" spacing={3}
@@ -45,7 +31,7 @@ export default function Documentation(): JSX.Element {
         </Typography>
       </Grid>
       <Grid item>
-        <Typography >This app determines the inter-coder reliability via various statistics. To calculate the inter-coder reliability, please first choose the statistics you would like to calculate and upload the required files.</Typography>
+        <Typography >This app determines the <Link onClick={() => shell.openExternal("https://en.wikipedia.org/wiki/Inter-rater_reliability")}>inter-coder reliability</Link> via various statistics. To calculate the inter-coder reliability, please first choose the statistics you would like to calculate and upload the required files.</Typography>
       </Grid>
       <Grid item>
         <Typography variant="h5">
