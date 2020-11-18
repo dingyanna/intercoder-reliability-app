@@ -23,7 +23,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 
-
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 const theme1 = createMuiTheme({
   palette: {
     primary: {
@@ -35,6 +39,12 @@ const theme1 = createMuiTheme({
   },
 });
 
+function createCategory(category: any) {
+  return {category}
+}
+function createCatWeight(category: any, weight: any) {
+  return {category, weight}
+}
 export default function Calculation(): JSX.Element {
   const [data, setData] = React.useState('no file chosen');
   const [dataPath, setDataPath] = React.useState('');
@@ -49,8 +59,8 @@ export default function Calculation(): JSX.Element {
   const [numCoders, setNumCoders] = React.useState('None');
   const [numSubjects, setNumSubjects] = React.useState('None');
 
-  const [categoryList, setCategoryList] = React.useState(['None']);
-  const [weightsList, setWeightsList] = React.useState(['None']);
+  const [categoryList, setCategoryList] = React.useState([createCategory('None')]);
+  const [weightsList, setWeightsList] = React.useState([createCatWeight('None', 'None')]);
   const [linearProgress, setLinearProgress] = React.useState(false);
 
   const [backDrop, setBackDrop] = React.useState(false);
@@ -97,7 +107,6 @@ export default function Calculation(): JSX.Element {
   const { cohen, weighted, multilabel, kNominal, kOrdinal,
     pNominal, pOrdinal, fNominal, fOrdinal, sNominal, sOrdinal, } = state;
 
-
   const onDataUploaded = (e: any): void => {
 
     setLinearProgress(false)
@@ -140,7 +149,11 @@ export default function Calculation(): JSX.Element {
     detect_cat.on('message', function (message) {
       console.log(message);
       const mylist = message.split(',');
-      setCategoryList(mylist);
+      let mylist1 = []
+      for (let i = 0; i < mylist.length; i++) {
+        mylist1.push(createCategory(mylist[i]))
+      }
+      setCategoryList(mylist1);
       setLinearProgress(false)
     })
   };
@@ -161,7 +174,12 @@ export default function Calculation(): JSX.Element {
 
     detect_weight.on('message', function (message) {
       console.log(message);
-      let tokenize1 = message.split(',')
+      let tokenize = message.split(',')
+      let tokenize1 = []
+      for (let i = 0; i < tokenize.length; i++) {
+        let catWeight = tokenize[i].split(':')
+        tokenize1.push(createCatWeight(catWeight[0], catWeight[1]))
+      }
       setWeightsList(tokenize1)
       setLinearProgress(false);
     })
@@ -175,8 +193,8 @@ export default function Calculation(): JSX.Element {
     setWeights('no file chosen');
     setNumCoders('None');
     setNumSubjects('None');
-    setCategoryList(['None']);
-    setWeightsList(['None']);
+    setCategoryList([createCategory('None')]);
+    setWeightsList([createCatWeight('None', 'None')]);
     setLinearProgress(false);
     setResult('');
     setOpenResult(false);
@@ -285,7 +303,7 @@ export default function Calculation(): JSX.Element {
         <Grid
           item
           container
-          xs={5}
+          xs={6}
           direction="column"
           spacing={2}
         >
@@ -300,104 +318,91 @@ export default function Calculation(): JSX.Element {
               Choose measure(s)
             </Typography>
           </Grid>
-          <Grid item container>
-            <Grid item xs={12} sm={6}>
-              <FormControl component="fieldset" >
-                <FormLabel component="legend">Without weights</FormLabel>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={cohen} onChange={handleChange} name="cohen" />}
-                    label="Cohen's Kappa"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={pNominal} onChange={handleChange} name="pNominal" />}
-                    label="Percentage Agreement"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={kNominal} onChange={handleChange} name="kNominal" />}
-                    label="Krippendorff's Alpha"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={sNominal} onChange={handleChange} name="sNominal" />}
-                    label="Scott's Pi"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={fNominal} onChange={handleChange} name="fNominal" />}
-                    label="Fleiss' Kappa"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={woWeights}
-                      onChange={() => {
-                        if (!woWeights) {
-                          setState({
-                            ...state, cohen: true, multilabel: true,
-                            fNominal: true, pNominal: true,
-                            kNominal: true, sNominal: true
-                          })
-                        }
-                        setWoWeights(!woWeights);
-                      }}
-                      name="woWeights" />}
-                    label="all above"
-                  />
-                </FormGroup>
-              </FormControl>
-              <FormControl component="fieldset" >
-                <FormLabel component="legend">Multi-label</FormLabel>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={multilabel} onChange={handleChange} name="multilabel" />}
-                    label="Multi-label Kappa"
-                  />
-                 
-                </FormGroup>
-              </FormControl>
-            </Grid>
-            <Grid xs={12} sm={6} item>
-              <FormControl component="fieldset" >
-                <FormLabel component="legend">With weights</FormLabel>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={weighted} onChange={handleChange} name="weighted" />}
-                    label="Weighted Kappa"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={pOrdinal} onChange={handleChange} name="pOrdinal" />}
-                    label="Weighted Percentage Agreement"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={kOrdinal} onChange={handleChange} name="kOrdinal" />}
-                    label="Krippendorff's Alpha"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={sOrdinal} onChange={handleChange} name="sOrdinal" />}
-                    label="Scott's Pi"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={fOrdinal} onChange={handleChange} name="fOrdinal" />}
-                    label="Fleiss' Kappa"
-                  />
 
-                </FormGroup>
-                <FormControlLabel
-                  control={<Checkbox checked={wWeights}
-                    onChange={() => {
-                      if (!wWeights) {
-                        setState({
-                          ...state, weighted: true, fOrdinal: true,
-                          pOrdinal: true, kOrdinal: true, sOrdinal: true
-                        })
-                      }
-                      setWWeights(!wWeights);
-                    }}
-                    name="wWeights" />}
-                  label="all above"
-                />
-                
-              </FormControl>
-              
+          <Grid item>
+          <Table size="small" aria-label="a dense table" style={{maxWidth: 500}}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>   </TableCell>
+                  <TableCell>  Non-weighted </TableCell>
+                  <TableCell>  Weighted </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    Cohen's Kappa
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                    <Checkbox checked={cohen} onChange={handleChange} name="cohen" />
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                    <Checkbox checked={weighted} onChange={handleChange} name="weighted" />
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    Percentage Agreement
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                  <Checkbox checked={pNominal} onChange={handleChange} name="pNominal" />
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                  <Checkbox checked={pOrdinal} onChange={handleChange} name="pOrdinal" />
+                  </TableCell>
+                </TableRow>  
+
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                  Krippendorff's Alpha
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                    <Checkbox checked={kNominal} onChange={handleChange} name="kNominal" />
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                    <Checkbox checked={kOrdinal} onChange={handleChange} name="kOrdinal" />
+                  </TableCell>
+                </TableRow> 
+
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                  Scott's Pi
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                    <Checkbox checked={sNominal} onChange={handleChange} name="sNominal" />
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                    <Checkbox checked={sOrdinal} onChange={handleChange} name="sOrdinal" />
+                  </TableCell>
+                </TableRow>
+
+
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    Fleiss' Kappa
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                    <Checkbox checked={fNominal} onChange={handleChange} name="fNominal" />
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                    <Checkbox checked={fOrdinal} onChange={handleChange} name="fOrdinal" />
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                  Multi-label Kappa
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                    <Checkbox checked={multilabel} onChange={handleChange} name="multilabel" />
+                  </TableCell>
+                  <TableCell component='th' scope='row'></TableCell>
+                </TableRow>
+
+              </TableBody>
+            </Table>
             </Grid>
-          </Grid>
 
 
           <div style={{ height: 30 }}> </div>
@@ -517,7 +522,7 @@ export default function Calculation(): JSX.Element {
         <Grid
           item
           container
-          xs={7}
+          xs={6}
           direction="column"
           justify="flex-start"
           spacing={3}
@@ -589,31 +594,56 @@ export default function Calculation(): JSX.Element {
                 </Alert>
               </Collapse>
             </Grid>
+
             <Grid item>
               <Typography variant="subtitle1">
-                1. Number of Coders: {numCoders}
+                1. Number of Subjects: {numSubjects}
               </Typography>
             </Grid>
 
             <Grid item>
-              <Typography variant="subtitle1">
-                2. Number of Subjects: {numSubjects}
-              </Typography>
-            </Grid>
+              <Typography variant="subtitle1">2. Categories:</Typography>
 
-            <Grid item>
-              <Typography variant="subtitle1">3. Categories:</Typography>
-              <Typography
-                variant="subtitle1"
-                className={styles.new_line}
-                style={{ marginLeft: 20 }}>{categoryList.join('\n')}</Typography>
+              <Table size="small" aria-label="a dense table" style={{maxWidth: 400}}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Category</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                  {categoryList.map((category) => (
+                    <TableRow key={category.category}>
+                      <TableCell component="th" scope="row">
+                        {category.category}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
             </Grid>
             <Grid item>
-              <Typography variant="subtitle1">4. Category to Weight:</Typography>
-              <Typography
-                variant="subtitle1"
-                className={styles.new_line}
-                style={{ marginLeft: 20 }}>{weightsList.join('\n')}</Typography>
+              <Typography variant="subtitle1">3. Category to Weight:</Typography>
+              <Table size="small" aria-label="a dense table" style={{maxWidth: 400}}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Category</TableCell>
+                  <TableCell>Weight</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                  {weightsList.map((category) => (
+                    <TableRow key={category.category}>
+                      <TableCell component="th" scope="row">
+                        {category.category}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {category.weight}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+
             </Grid>
           </Grid>
           <div style={{ height: 180 }}> </div>

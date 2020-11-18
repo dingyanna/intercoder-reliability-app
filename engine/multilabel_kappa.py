@@ -46,20 +46,15 @@ def main(data):
             # calculate weighted agreement_by_chance
             agreement_by_chance = 0
             coder1 = dict(df.iloc[:, i*size].value_counts()) 
-            print(coder1)
             coder2 = dict(df.iloc[:, j*size].value_counts())
-            print(coder2)
             for k in coder1:
                 for t in coder2:
                     weight = get_weight(str(k), str(t))
                     agreement_by_chance += weight * (coder1[k] * coder2[t])\
                         / (total * total)
-            # print('observed agreement', observed_agreement)
-            # print('agreement by chance', agreement_by_chance)
             kappa = (observed_agreement - agreement_by_chance) \
                 / (1 - agreement_by_chance)
             sum_kappa += kappa
-            # print('kappa', kappa)
     kappa = sum_kappa / (num_coders * (num_coders - 1) / 2)
     return kappa
 

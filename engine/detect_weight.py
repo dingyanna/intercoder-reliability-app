@@ -7,7 +7,7 @@ df = pd.read_csv(categories, header=None, names=["c", "w"],
 mylist = df.values.tolist()
 mylist1 = []
 for i in mylist:
-    item = ': '.join(i)
+    item = ':'.join(i)
     mylist1.append(item)
 message = ','.join(mylist1)
 
