@@ -2,11 +2,9 @@ import React from 'react';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 import {
-  FormControl,
   Grid,
   Button,
   Typography,
-  FormControlLabel,
   ThemeProvider,
   Divider,
 } from '@material-ui/core';
@@ -20,8 +18,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
 import CloseIcon from '@material-ui/icons/Close';
 import Checkbox from '@material-ui/core/Checkbox';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormGroup from '@material-ui/core/FormGroup';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -537,7 +533,7 @@ export default function Calculation(): JSX.Element {
           <Grid item>
             <Typography variant="subtitle1" style={{ color: 'gray' }}>
               This section displays the essential information extracted from the
-              files uploaded in SETTINGS. Please confirm it before pressing OK.
+              files uploaded in SETTINGS. Please confirm it before pressing CALCULATE.
               It is recommended to refer the documentation for requirements on
               the file format.
             </Typography>
