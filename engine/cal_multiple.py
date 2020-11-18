@@ -46,10 +46,10 @@ try:
     
     if bitmap[9] == '1':
         temp = fleiss_kappa.main(data, categories, 'nominal', '')
-        result.append("Fleiss' Kappa: " + round(temp, 3))
+        result.append("Fleiss' Kappa: " + str(round(temp, 3)))
     if bitmap[10] == '1':
         temp = fleiss_kappa.main(data, categories, 'ordinal', weights)
-        result.append("Fleiss' Kappa (Weighted): " + round(temp, 3))
+        result.append("Fleiss' Kappa (Weighted): " + str(round(temp, 3)))
     
     print(', '.join(result))
     sys.stdout.flush()
